@@ -4,9 +4,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { IS_DEMO, demoClient } from "@/lib/demo";
 
-export async function createClient() {
-  const store = await cookies();
-  const real = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+type Store = Awaited<ReturnType<typeof cookies>>;
+const realClient = (store: Store) =>
+  createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
     cookies: {
       getAll: () => store.getAll(),
       setAll: (list) => {
@@ -14,14 +14,20 @@ export async function createClient() {
       },
     },
   });
-  return IS_DEMO ? (demoClient(store.get("demo_user")?.value ?? null) as unknown as typeof real) : real;
+
+export async function createClient() {
+  const store = await cookies();
+  if (IS_DEMO) return demoClient(store.get("demo_user")?.value ?? null) as unknown as ReturnType<typeof realClient>;
+  return realClient(store);
 }
 
 // Só no servidor: ignora RLS. Use SEMPRE depois de checar o papel do usuário.
 export function adminClient() {
-  const real = createAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY ?? "demo", { auth: { persistSession: false } });
-  return IS_DEMO ? (demoClient("admin") as unknown as typeof real) : real;
+  if (IS_DEMO) return demoClient("admin") as unknown as ReturnType<typeof realAdmin>;
+  return realAdmin();
 }
+const realAdmin = () =>
+  createAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
 
 export async function requireUser() {
   const supabase = await createClient();
