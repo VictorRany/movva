@@ -5,7 +5,8 @@ export default function PersonalForm({ p, cities, action, isNew }: { p?: any; ci
     <form action={action} className="grid gap-3 md:grid-cols-2">
       {p && <input type="hidden" name="id" value={p.id} />}
       <div><label className="label">Nome completo *</label><input name="name" required defaultValue={p?.name} className="input" /></div>
-      {isNew ? <div><label className="label">E-mail (recebe o convite) *</label><input name="email" type="email" required className="input" /></div>
+      {isNew ? <><div><label className="label">E-mail (login) *</label><input name="email" type="email" required className="input" /></div>
+        <div><label className="label">Senha inicial</label><input name="password" type="text" minLength={6} placeholder="Vazio = envia convite por e-mail" className="input" /></div></>
         : <div><label className="label">E-mail</label><input disabled value={p?.email ?? ""} className="input opacity-60" /></div>}
       <div><label className="label">WhatsApp *</label><input name="phone" required defaultValue={p?.phone} className="input" /></div>
       <div><label className="label">CPF / CNPJ *</label><input name="cpf" required defaultValue={p?.cpf} className="input" /></div>
@@ -26,7 +27,7 @@ export default function PersonalForm({ p, cities, action, isNew }: { p?: any; ci
         <label className="flex gap-2"><input type="checkbox" name="accepts_presencial" defaultChecked={p?.accepts_presencial ?? true} /> Atende presencial</label>
         {!isNew && <label className="flex gap-2"><input type="checkbox" name="active" defaultChecked={p?.active} /> Ativo (recebe alunos)</label>}
       </div>
-      <button className="btn md:col-span-2">{isNew ? "Cadastrar e enviar convite" : "Salvar alterações"}</button>
+      <button className="btn md:col-span-2">{isNew ? "Cadastrar personal" : "Salvar alterações"}</button>
     </form>
   );
 }

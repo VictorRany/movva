@@ -9,6 +9,20 @@ import { normalizeCode } from "@/lib/promo";
 import { adminClient, requireAdmin } from "@/lib/supabase/server";
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? "").trim();
+
+// Cria a conta: com senha (admin entrega o login por WhatsApp) ou por convite no e-mail.
+async function createAccount(email: string, password: string, meta: Record<string, string>): Promise<{ id: string } | { error: string }> {
+  const db = adminClient();
+  if (password) {
+    if (password.length < 6) return { error: "A senha precisa ter pelo menos 6 caracteres" };
+    const { data, error } = await db.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: meta });
+    return error || !data.user ? { error: error?.message ?? "Falha ao criar conta" } : { id: data.user.id };
+  }
+  const { data, error } = await db.auth.admin.inviteUserByEmail(email, {
+    data: meta, redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/definir-senha`,
+  });
+  return error || !data.user ? { error: error?.message ?? "Falha ao enviar convite" } : { id: data.user.id };
+}
 const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
 
 // ---------- cidades ----------
@@ -53,16 +67,12 @@ export async function createPersonal(form: FormData) {
   let id = exists?.id as string | undefined;
   if (exists && exists.role !== "aluno") redirect("/admin/personais?erro=Esse e-mail já é de um personal/admin");
   if (!id) {
-    // envia e-mail de convite: o personal clica e define a senha
-    const { data, error } = await db.auth.admin.inviteUserByEmail(email, {
-      data: { name: fields.name, phone: fields.phone },
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/definir-senha`,
-    });
-    if (error || !data.user) redirect(`/admin/personais?erro=${encodeURIComponent(error?.message ?? "Falha no convite")}`);
-    id = data.user.id;
+    const created = await createAccount(email, str(form, "password"), { name: fields.name, phone: fields.phone });
+    if ("error" in created) redirect(`/admin/personais?erro=${encodeURIComponent(created.error)}`);
+    id = created.id;
   }
   await db.from("profiles").update({ ...fields, email, role: "personal", active: true }).eq("id", id);
-  redirect(`/admin/personais/${id}?ok=Personal cadastrado. Convite enviado para ${email}`);
+  redirect(`/admin/personais/${id}?ok=${encodeURIComponent(str(form, "password") ? `Personal cadastrado. Login: ${email} (senha definida por você)` : `Personal cadastrado. Convite enviado para ${email}`)}`);
 }
 
 export async function updatePersonal(form: FormData) {
@@ -128,12 +138,11 @@ export async function grantComp(form: FormData) {
     redirect(`/admin/alunos/novo?erro=${encodeURIComponent("Esse aluno já paga uma assinatura. Cancele a assinatura dele antes de liberar cortesia.")}`);
   }
   let id = existing?.id as string | undefined;
+  const back = str(form, "back") || "/admin/alunos/novo";
   if (!id) {
-    const { data, error } = await db.auth.admin.inviteUserByEmail(email, {
-      data: { name: str(form, "name"), phone: str(form, "phone"), city_id: str(form, "city_id") }, redirectTo: confirmUrl(),
-    });
-    if (error || !data.user) redirect(`/admin/alunos/novo?erro=${encodeURIComponent(error?.message ?? "Falha ao enviar convite")}`);
-    id = data.user.id;
+    const created = await createAccount(email, str(form, "password"), { name: str(form, "name"), phone: str(form, "phone"), city_id: str(form, "city_id") });
+    if ("error" in created) redirect(`${back}?erro=${encodeURIComponent(created.error)}`);
+    id = created.id;
   }
   await db.from("profiles").update({
     email, name: str(form, "name") || existing?.name, phone: str(form, "phone") || existing?.phone, city_id: str(form, "city_id") || existing?.city_id || null,
@@ -142,7 +151,8 @@ export async function grantComp(form: FormData) {
   await setPersonal(id, str(form, "personal_id") || "auto");
   const code = normalizeCode(form.get("promo_code"));
   if (code) await upsertCode(id, code, Number(str(form, "discount_pct") || 0), Number(str(form, "bonus_months") || 1), Number(str(form, "signups_per_bonus") || 5));
-  redirect(`/admin/alunos/${id}?ok=${encodeURIComponent(existing ? "Cortesia liberada para a conta existente." : `Cortesia liberada. Convite enviado para ${email}.`)}`);
+  const how = existing ? "Cortesia liberada para a conta existente." : str(form, "password") ? `Conta criada. Login: ${email} (senha definida por você).` : `Cortesia liberada. Convite enviado para ${email}.`;
+  redirect(`/admin/alunos/${id}?ok=${encodeURIComponent(how)}`);
 }
 
 export async function updateStudent(form: FormData) {
