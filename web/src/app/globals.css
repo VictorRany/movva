@@ -7,12 +7,21 @@
   --color-cream: #f2efe8;
   --color-gold: #f5c518;
   --color-muted: #9aa6ba;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-display: var(--font-display), "Arial Narrow", sans-serif;
 }
 
 html { -webkit-text-size-adjust: 100%; }
 body { background: var(--color-navy); color: var(--color-cream); padding-top: env(safe-area-inset-top); overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
 .safe-bottom { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
+h1, h2, .display { font-family: var(--font-display); letter-spacing: 0.01em; text-wrap: balance; }
+h1 { @apply text-3xl font-bold uppercase leading-none sm:text-4xl; }
+h2 { @apply text-xl font-bold uppercase leading-tight; }
+.eyebrow { @apply text-xs font-semibold uppercase tracking-[0.18em] text-gold; }
+.num { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
 .card { @apply rounded-2xl bg-navy-2 border border-navy-3 p-5; }
+.panel { @apply rounded-2xl bg-navy-2 p-5; }
+.chip { @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold; }
 .btn { @apply inline-flex min-h-11 items-center justify-center rounded-xl bg-gold px-5 py-3 font-semibold text-navy hover:brightness-95 disabled:opacity-50; }
 .btn-ghost { @apply inline-flex min-h-11 whitespace-nowrap items-center justify-center rounded-xl border border-navy-3 px-5 py-3 font-medium hover:bg-navy-3; }
 .input { @apply w-full min-w-0 rounded-xl bg-navy border border-navy-3 px-4 py-3 text-base outline-none focus:border-gold; } /* 16px: evita zoom no iPhone */

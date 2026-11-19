@@ -99,7 +99,7 @@ const db: Record<string, Row[]> = (g.__movvaDb3 ??= {
     ] },
   ],
   messages: [
-    { id: uid(), student_id: "aluno-1", from_personal: true, body: "Oi Ana! Seu treino novo já está no app. Qualquer dúvida me chama aqui 💪", read: true, created_at: ago(10) },
+    { id: uid(), student_id: "aluno-1", from_personal: true, body: "Oi Ana! Seu treino novo já está no app. Qualquer dúvida me chama aqui ", read: true, created_at: ago(10) },
     { id: uid(), student_id: "aluno-1", from_personal: false, body: "Obrigada! No agachamento posso diminuir a amplitude por causa do joelho?", read: false, created_at: ago(0.2) },
   ],
 });

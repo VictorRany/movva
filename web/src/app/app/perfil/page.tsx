@@ -30,7 +30,7 @@ export default async function Perfil() {
           </details>
         </div>
         <div className="card flex flex-col gap-2 text-sm">
-          <a href="/app/anamnese" className="text-gold">📝 Atualizar minha anamnese</a>
+          <a href="/app/anamnese" className="text-gold">Atualizar minha anamnese</a>
           <a href="/termos" className="text-muted">Termos de uso</a>
           <a href="/privacidade" className="text-muted">Política de privacidade</a>
         </div>

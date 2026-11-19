@@ -173,9 +173,9 @@ try {
 
   // ---------- aluna usa o app ----------
   await step("Aluna: vê o treino e marca como concluído", async () => {
-    await s.goto(`${BASE}/app`); await s.getByText("Treino A QA").waitFor(); if (!(await s.locator("details[open]").count())) await s.getByText("Treino A QA").click();
+    await s.goto(`${BASE}/app`); await s.getByText("Treino A QA").first().waitFor();
     await s.fill('input[name="note"]', "Fiz com 20kg");
-    await s.getByRole("button", { name: "Concluí" }).click(); await s.getByText("✓ feito hoje").waitFor();
+    await s.getByRole("button", { name: "Concluí o treino" }).click(); await s.getByText("Treino concluído").waitFor();
     await noOverflow(s, "treino"); await s.screenshot({ path: `${SHOTS}/06-treino-celular.png`, fullPage: true });
   });
   await step("Aluna: lê a mensagem e responde", async () => {

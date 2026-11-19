@@ -7,7 +7,7 @@ export default function Termos() {
     <main><Header />
       <article className="mx-auto max-w-2xl space-y-4 px-4 pb-16 text-sm leading-relaxed">
         <h1 className="text-2xl font-bold">Termos de Uso</h1>
-        <p className="rounded-xl bg-gold/10 p-3 text-gold">⚠ Modelo inicial — revise com um advogado antes do lançamento.</p>
+        <p className="rounded-xl bg-gold/10 p-3 text-gold">Modelo inicial — revise com um advogado antes do lançamento.</p>
         <h2 className="font-bold">1. O serviço</h2>
         <p>A Movva oferece consultoria de treinamento físico e orientação nutricional, presencial ou online, mediante assinatura mensal. Os treinos são elaborados individualmente por profissional de Educação Física com registro no CREF.</p>
         <h2 className="font-bold">2. Saúde e responsabilidade</h2>

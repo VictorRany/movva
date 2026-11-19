@@ -29,7 +29,7 @@ export default async function AdminCidades({ searchParams }: { searchParams: Pro
               return (
                 <tr key={c.id} className="border-t border-navy-3">
                   <td className="p-3 font-semibold">{c.name}/{c.state}</td>
-                  <td className={`p-3 ${c.active && !pres ? "text-red-300" : ""}`}>{pres}{c.active && !pres && " ⚠ sem personal"}</td>
+                  <td className={`p-3 ${c.active && !pres ? "text-red-300" : ""}`}>{pres}{c.active && !pres && " sem personal"}</td>
                   <td className="p-3">{d.active.filter((s) => s.city_id === c.id).length}</td>
                   <td className="p-3">{leads.filter((s) => s.city_id === c.id).length}</td>
                   <td className="p-3">

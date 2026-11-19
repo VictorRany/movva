@@ -24,7 +24,7 @@ export default async function Financeiro({ searchParams }: { searchParams: Promi
       <h2 className="mb-3 text-lg font-bold">Repasses pendentes</h2>
       <p className="mb-3 text-sm text-muted">Faça o Pix para o personal e clique em “Registrar repasse”. Só mensalidades aprovadas entram; estornos ficam de fora automaticamente.</p>
       <div className="mb-8 space-y-3">
-        {!toPay.length && <p className="text-muted">Nenhum repasse pendente ✅</p>}
+        {!toPay.length && <p className="text-muted">Nenhum repasse pendente </p>}
         {toPay.map(({ p, items }) => {
           const total = items.reduce((t, x) => t + Number(x.personal_amount), 0);
           return (
@@ -55,7 +55,7 @@ export default async function Financeiro({ searchParams }: { searchParams: Promi
       </div>
       <div className="mb-4 grid grid-cols-3 gap-3">
         {[[brl(gross), "bruto"], [brl(comm), "comissões"], [brl(gross - comm), "Movva (antes de taxas MP)"]].map(([v, l]) => (
-          <div key={l} className="card p-4"><p className="text-xl font-extrabold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
+          <div key={l} className="card p-4"><p className="num text-2xl font-bold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
         ))}
       </div>
       <div className="card overflow-x-auto p-0">

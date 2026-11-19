@@ -25,8 +25,8 @@ export default async function AdminAlunos({ searchParams }: { searchParams: Prom
 
   return (
     <AdminShell>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><h1 className="text-2xl font-bold">Alunos</h1><Link href="/admin/alunos/novo" className="btn">🎁 Liberar acesso cortesia</Link></div>
-      <form className="mb-3"><input type="hidden" name="f" value={f} /><input name="q" defaultValue={q} placeholder="🔍 Nome ou e-mail" className="input" /></form>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><h1 className="text-2xl font-bold">Alunos</h1><Link href="/admin/alunos/novo" className="btn">Liberar acesso cortesia</Link></div>
+      <form className="mb-3"><input type="hidden" name="f" value={f} /><input name="q" defaultValue={q} placeholder="Nome ou e-mail" className="input" /></form>
       <div className="mb-4 flex flex-wrap gap-2 text-sm">
         {filters.map(([k, l, fx]) => (
           <a key={k} href={`?f=${k}`} className={`rounded-full px-4 py-2 ${f === k ? "bg-gold font-semibold text-navy" : "bg-navy-2"}`}>{l} ({d.students.filter(fx).length})</a>
@@ -47,7 +47,7 @@ export default async function AdminAlunos({ searchParams }: { searchParams: Prom
                     <input type="hidden" name="student_id" value={s.id} />
                     <select name="personal_id" defaultValue={s.personal_id ?? ""} className={`input py-2 ${!s.personal_id && s.sub_status === "active" ? "border-red-400" : ""}`}>
                       <option value="" disabled>— sem personal —</option>
-                      <option value="auto">⚙ Automático</option>
+                      <option value="auto">Automático</option>
                       {activePersonals.map((p) => <option key={p.id} value={p.id}>{p.name} ({d.loadOf(p.id)}/{p.max_students}) · {d.cityName(p.city_id)}</option>)}
                     </select>
                     <button className="btn-ghost px-3 py-2">OK</button>

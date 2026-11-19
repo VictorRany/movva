@@ -65,13 +65,13 @@ export async function notifyMessage(studentId: string, fromPersonal: boolean, bo
   const preview = esc(body.length > 400 ? body.slice(0, 400) + "…" : body);
   if (fromPersonal) {
     if (!wants(student)) return;
-    await sendEmail(student?.email, `💬 ${first(personal?.name)} respondeu sua mensagem`, layout(
+    await sendEmail(student?.email, `${first(personal?.name)} respondeu sua mensagem`, layout(
       `${first(student?.name)}, você tem uma nova mensagem`,
       `<p><b>${esc(personal?.name ?? "Seu personal")}</b> escreveu:</p><blockquote style="margin:0;padding:12px 16px;border-left:3px solid #f5c518;background:#0f1a2e;border-radius:8px">${preview}</blockquote>`,
       { label: "Abrir conversa", href: `${SITE()}/app/mensagens` }));
   } else {
     if (!wants(personal)) return;
-    await sendEmail(personal?.email, `💬 Nova mensagem de ${student?.name}`, layout(
+    await sendEmail(personal?.email, `Nova mensagem de ${student?.name}`, layout(
       `${student?.name} mandou uma mensagem`,
       `<blockquote style="margin:0;padding:12px 16px;border-left:3px solid #f5c518;background:#0f1a2e;border-radius:8px">${preview}</blockquote>
        <p style="margin-top:16px">Clique no botão para responder pelo painel. <b>Não responda este e-mail</b> — a resposta precisa ser pelo app para ficar no histórico do aluno.</p>`,
@@ -82,7 +82,7 @@ export async function notifyMessage(studentId: string, fromPersonal: boolean, bo
 export async function notifyCheckin(studentId: string) {
   const { student, personal } = await people(studentId);
   if (!wants(personal)) return;
-  await sendEmail(personal?.email, `📋 Check-in semanal de ${student?.name}`, layout(
+  await sendEmail(personal?.email, `Check-in semanal de ${student?.name}`, layout(
     `${student?.name} enviou o check-in da semana`, `<p>Veja peso, energia e o relato da semana e deixe seu retorno.</p>`,
     { label: "Ver e responder", href: `${SITE()}/personal/aluno/${studentId}?tab=checkins` }));
 }
@@ -90,7 +90,7 @@ export async function notifyCheckin(studentId: string) {
 export async function notifyCheckinReply(studentId: string) {
   const { student, personal } = await people(studentId);
   if (!wants(student)) return;
-  await sendEmail(student?.email, `✅ ${first(personal?.name)} respondeu seu check-in`, layout(
+  await sendEmail(student?.email, `${first(personal?.name)} respondeu seu check-in`, layout(
     `Seu check-in foi respondido`, `<p>${esc(personal?.name ?? "Seu personal")} deixou um retorno sobre a sua semana.</p>`,
     { label: "Ver resposta", href: `${SITE()}/app/evolucao` }));
 }
@@ -98,7 +98,7 @@ export async function notifyCheckinReply(studentId: string) {
 export async function notifyPlanReady(studentId: string, what: "treino" | "dieta") {
   const { student, personal } = await people(studentId);
   if (!wants(student)) return;
-  await sendEmail(student?.email, what === "treino" ? "🏋️ Seu treino está pronto!" : "🥗 Seu plano alimentar está pronto!", layout(
+  await sendEmail(student?.email, what === "treino" ? "Seu treino está pronto!" : "Seu plano alimentar está pronto!", layout(
     `${first(student?.name)}, ${what === "treino" ? "seu treino novo chegou" : "sua dieta chegou"}!`,
     `<p>${esc(personal?.name ?? "Seu personal")} acabou de publicar ${what === "treino" ? "seu treino individual" : "seu plano alimentar"} no app.</p>`,
     { label: what === "treino" ? "Ver meu treino" : "Ver minha dieta", href: `${SITE()}/app${what === "dieta" ? "/dieta" : ""}` }));
@@ -107,7 +107,7 @@ export async function notifyPlanReady(studentId: string, what: "treino" | "dieta
 export async function notifyNewStudent(studentId: string) {
   const { student, personal } = await people(studentId);
   if (!personal || !wants(personal)) return;
-  await sendEmail(personal.email, `🎉 Novo aluno: ${student?.name}${student?.is_comp ? " (cortesia)" : ""}`, layout(
+  await sendEmail(personal.email, `Novo aluno: ${student?.name}${student?.is_comp ? " (cortesia)" : ""}`, layout(
     `Você tem um novo aluno!`,
     `<p><b>${esc(student?.name ?? "")}</b> foi atribuído a você${student?.is_comp ? " como <b>acesso cortesia</b> (parceria/influenciador)" : ""}.</p>
      <p>Assim que ele preencher a anamnese, monte o treino individual. Prazo: até 3 dias úteis.</p>`,
@@ -117,7 +117,7 @@ export async function notifyNewStudent(studentId: string) {
 export async function notifyAnamneseDone(studentId: string) {
   const { student, personal } = await people(studentId);
   if (!personal || !wants(personal)) return;
-  await sendEmail(personal.email, `📝 ${student?.name} preencheu a anamnese — hora de montar o treino`, layout(
+  await sendEmail(personal.email, `${student?.name} preencheu a anamnese — hora de montar o treino`, layout(
     `Anamnese recebida`, `<p><b>${esc(student?.name ?? "")}</b> respondeu o questionário. Confira objetivos, rotina e alertas de saúde e monte o treino.</p>`,
     { label: "Ver anamnese", href: `${SITE()}/personal/aluno/${studentId}?tab=anamnese` }));
 }

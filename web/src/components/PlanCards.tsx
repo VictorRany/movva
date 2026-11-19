@@ -1,3 +1,4 @@
+import Icon from "@/components/Icon";
 import { PLANS, brl } from "@/lib/plans";
 import { subscribe } from "@/app/assinar/actions";
 
@@ -13,10 +14,10 @@ export default function PlanCards({ loggedIn, presencialOk = true, promo }: { lo
             <p className="text-xs font-semibold tracking-widest text-muted">{p.modality === "presencial" ? "PRESENCIAL" : "ONLINE"}</p>
             <h3 className="text-xl font-bold">{p.name}</h3>
             <p className="text-sm text-muted">{p.tagline}</p>
-            <p className="my-4 text-3xl font-extrabold">
+            <p className="num my-4 text-4xl font-bold">
               {off > 0 && <span className="mr-2 text-base font-normal text-muted line-through">{brl(p.price)}</span>}
               {brl(+(p.price * (1 - off / 100)).toFixed(2))}<span className="text-base font-normal text-muted">/mês</span></p>
-            <ul className="mb-6 space-y-2 text-sm">{p.features.map((f) => <li key={f}>✓ {f}</li>)}</ul>
+            <ul className="mb-6 space-y-2 text-sm">{p.features.map((f) => <li key={f} className="flex gap-2"><Icon name="check" size={16} className="mt-0.5 text-gold" />{f}</li>)}</ul>
             {blocked ? (
               <p className="mt-auto rounded-xl bg-navy p-3 text-center text-sm text-muted">Ainda não temos personal presencial na sua cidade. Em breve!</p>
             ) : loggedIn ? (

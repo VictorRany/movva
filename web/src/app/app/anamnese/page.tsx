@@ -58,7 +58,7 @@ export default async function Anamnese() {
           <input type="checkbox" name="terms" required defaultChecked={!!data} className="mt-1 accent-[var(--color-gold)]" />
           <span>Declaro que as informações são verdadeiras e li e aceito os <a href="/termos" target="_blank" className="text-gold underline">Termos de Uso</a> e a <a href="/privacidade" target="_blank" className="text-gold underline">Política de Privacidade</a>. Estou ciente de que devo procurar liberação médica caso tenha alguma condição de saúde.</span>
         </label>
-        <button className="btn w-full text-lg">{data ? "Salvar alterações" : "Enviar e começar 🚀"}</button>
+        <button className="btn w-full text-lg">{data ? "Salvar alterações" : "Enviar e começar "}</button>
       </form>
     </main>
   );

@@ -34,5 +34,5 @@ export async function creditPromo(studentId: string) {
   const base = inf.comp_until && inf.comp_until > today ? new Date(inf.comp_until + "T12:00") : new Date();
   const until = addMonths(base, code.bonus_months);
   await db.from("profiles").update({ is_comp: true, sub_status: "active", comp_until: until }).eq("id", inf.id);
-  after(() => sendEmail(inf.email, "🎁 Você ganhou mais tempo grátis na Movva!", `<p>Seu código <b>${code.code}</b> chegou a <b>${total} assinaturas</b> e você ganhou +${code.bonus_months} mês grátis. Seu acesso foi estendido até <b>${new Date(until + "T12:00").toLocaleDateString("pt-BR")}</b>. Obrigado por divulgar! 💛</p>`));
+  after(() => sendEmail(inf.email, "Você ganhou mais tempo grátis na Movva!", `<p>Seu código <b>${code.code}</b> chegou a <b>${total} assinaturas</b> e você ganhou +${code.bonus_months} mês grátis. Seu acesso foi estendido até <b>${new Date(until + "T12:00").toLocaleDateString("pt-BR")}</b>. Obrigado por divulgar! </p>`));
 }

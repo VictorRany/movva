@@ -27,7 +27,7 @@ export default async function Influenciadores() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-bold">Influenciadores</h1>
         <div className="flex gap-2">
-          <Link href="/admin/cupons" className="btn-ghost">🎟 Códigos</Link>
+          <Link href="/admin/cupons" className="btn-ghost">Códigos</Link>
           <Link href="/admin/alunos/novo?tipo=influenciador" className="btn">+ Novo influenciador</Link>
         </div>
       </div>

@@ -22,7 +22,7 @@ export default async function Cupons({ searchParams }: { searchParams: Promise<{
     <AdminShell>
       <h1 className="mb-1 text-2xl font-bold">Códigos promocionais</h1>
       <p className="mb-4 text-sm text-muted">A cada N assinaturas pagas com o código, o influenciador ganha meses grátis (somados à validade da cortesia dele). Link de divulgação: <b>{site || "seusite"}/c/CODIGO</b></p>
-      {ok && <div className="card mb-4 border-gold">✅ {ok}</div>}
+      {ok && <div className="card mb-4 border-gold">{ok}</div>}
       {erro && <div className="card mb-4 border-red-400 text-red-300">{erro}</div>}
 
       <div className="card mb-6 overflow-x-auto p-0">

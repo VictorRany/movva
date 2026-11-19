@@ -29,13 +29,13 @@ export default async function NovaCortesia({ searchParams }: { searchParams: Pro
           <select name="plan" required defaultValue="online-completo" className="input">{PLANS.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
         <div><label className="label">Personal que vai atender *</label>
           <select name="personal_id" required defaultValue="auto" className="input">
-            <option value="auto">⚙ Automático (menos ocupado)</option>
+            <option value="auto">Automático (menos ocupado)</option>
             {d.personals.filter((p) => p.active).map((p) => <option key={p.id} value={p.id}>{p.name} ({d.loadOf(p.id)}/{p.max_students}) · {d.cityName(p.city_id)}</option>)}
           </select></div>
         <div><label className="label">Válido até (vazio = sem prazo)</label><input name="comp_until" type="date" defaultValue={inMonths(3)} className="input" /></div>
         <div><label className="label">{influ ? "Instagram / combinado" : "Observação"}</label><input name="comp_note" placeholder="Ex.: @fulana — 3 stories/mês" className="input" /></div>
         <div className="rounded-xl border border-navy-3 p-4 md:col-span-2">
-          <p className="mb-2 font-bold text-gold">🎟 Código promocional {influ ? "*" : "(opcional)"}</p>
+          <p className="mb-2 font-bold text-gold">Código promocional {influ ? "*" : "(opcional)"}</p>
           <div className="grid gap-3 md:grid-cols-4">
             <div><label className="label">Código</label><input name="promo_code" required={influ} minLength={3} placeholder="MARIA" className="input uppercase" /></div>
             <div><label className="label">Desconto p/ quem usar (%)</label><input name="discount_pct" type="number" min={0} max={90} defaultValue={0} className="input" /></div>

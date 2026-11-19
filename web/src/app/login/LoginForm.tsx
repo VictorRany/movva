@@ -34,7 +34,7 @@ export default function LoginForm({ plan, next, cities, demo }: { plan?: string;
       {demo && (
         <form action={demoLogin} className="card mx-auto my-4 max-w-md space-y-2 border-gold">
           <p className="text-sm font-semibold text-gold">MODO DEMONSTRAÇÃO — entrar como:</p>
-          <button name="as" value="admin-1" className="btn w-full">👑 Admin (você)</button>
+          <button name="as" value="admin-1" className="btn w-full">Admin (você)</button>
           <button name="as" value="personal-1" className="btn-ghost w-full">Personal Lucas (SP)</button>
           <button name="as" value="personal-2" className="btn-ghost w-full">Personal Marina (SP, só online)</button>
           <button name="as" value="aluno-1" className="btn-ghost w-full">Aluna Ana (com treino e dieta)</button>

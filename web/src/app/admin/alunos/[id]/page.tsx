@@ -33,13 +33,13 @@ export default async function AdminAluno({ params, searchParams }: { params: Pro
         {s.is_comp && <span className="rounded-full bg-gold px-3 py-1 text-xs font-bold text-navy">CORTESIA{s.comp_until ? ` até ${new Date(s.comp_until + "T12:00").toLocaleDateString("pt-BR")}` : ""}</span>}
       </div>
       <p className="mb-4 text-muted">{s.email} · {s.phone ?? "sem telefone"} · cadastro {new Date(s.created_at).toLocaleDateString("pt-BR")}</p>
-      {ok && <div className="card mb-4 border-gold">✅ {ok}</div>}
+      {ok && <div className="card mb-4 border-gold">{ok}</div>}
       {erro && <div className="card mb-4 border-red-400 text-red-300">{erro}</div>}
 
       <div className="mb-6 flex flex-wrap gap-2">
         <Link href={`/personal/aluno/${id}`} className="btn">Ver treino, anamnese e chat</Link>
-        <form action={resendAccess}><input type="hidden" name="id" value={id} /><input type="hidden" name="back" value={back} /><button className="btn-ghost">✉ Reenviar acesso (link de senha)</button></form>
-        {!s.is_comp && btn("comp_on", "🎁 Tornar cortesia")}
+        <form action={resendAccess}><input type="hidden" name="id" value={id} /><input type="hidden" name="back" value={back} /><button className="btn-ghost">Reenviar acesso (link de senha)</button></form>
+        {!s.is_comp && btn("comp_on", "Tornar cortesia")}
         {s.is_comp && btn("comp_off", "Remover cortesia")}
         {s.sub_status === "active" && !s.is_comp && <span className="self-center text-xs text-muted">Assinante pagante — cancelamento é feito pelo próprio aluno ou no Mercado Pago.</span>}
         {s.sub_status === "active" && s.is_comp && btn("block", "Bloquear acesso", "rounded-xl border border-red-400 px-5 py-3 text-red-400")}
@@ -51,7 +51,7 @@ export default async function AdminAluno({ params, searchParams }: { params: Pro
           <select name="plan" defaultValue={s.plan ?? ""} className="input"><option value="">—</option>{PLANS.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
         <div><label className="label">Personal</label>
           <select name="personal_id" defaultValue={s.personal_id ?? ""} className="input">
-            <option value="">— sem personal —</option><option value="auto">⚙ Automático</option>
+            <option value="">— sem personal —</option><option value="auto">Automático</option>
             {d.personals.filter((p) => p.active || p.id === s.personal_id).map((p) => <option key={p.id} value={p.id}>{p.name} ({d.loadOf(p.id)}/{p.max_students}) · {d.cityName(p.city_id)}</option>)}
           </select></div>
         <div><label className="label">Cidade</label>
@@ -65,7 +65,7 @@ export default async function AdminAluno({ params, searchParams }: { params: Pro
       {s.promo_code && <p className="mb-4 text-sm text-muted">Entrou com o código <b className="text-gold">{s.promo_code}</b>{s.promo_credited ? " (bônus já creditado ao influenciador)" : ""}.</p>}
       {s.is_comp && (
         <section className="card mb-6">
-          <h2 className="mb-2 font-bold">🎟 Código promocional</h2>
+          <h2 className="mb-2 font-bold">Código promocional</h2>
           {myCodes?.map((c) => (
             <p key={c.code} className="text-sm"><b className="font-mono text-gold">{c.code}</b> · {Number(c.discount_pct)}% off · +{c.bonus_months} mês a cada {c.signups_per_bonus ?? 5} assinaturas · {c.active ? "ativo" : "inativo"}
               <span className="text-muted"> — {referred.length} cadastro(s), {referred.filter((x) => x.promo_credited).length} pagante(s)</span></p>

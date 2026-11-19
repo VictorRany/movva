@@ -26,14 +26,14 @@ export default async function Evolucao() {
       <h1 className="mb-4 text-2xl font-bold">Sua evolução</h1>
       <div className="mb-4 grid grid-cols-3 gap-3 text-center">
         {[[total ?? 0, "treinos no total"], [month ?? 0, "treinos no mês"], [diff === null ? "—" : `${diff > 0 ? "+" : ""}${diff} kg`, "desde o início"]].map(([v, l]) => (
-          <div key={String(l)} className="card p-3"><p className="text-2xl font-extrabold text-gold">{v}</p><p className="text-xs text-muted">{l}</p></div>
+          <div key={String(l)} className="card p-3"><p className="num text-3xl font-bold text-gold">{v}</p><p className="text-xs text-muted">{l}</p></div>
         ))}
       </div>
       <div className="card mb-4"><h2 className="mb-2 font-bold">Peso</h2><WeightChart points={pts} /></div>
 
       {canCheckin ? (
         <form action={sendCheckin} className="card mb-4 space-y-3">
-          <h2 className="text-lg font-bold">📋 Check-in semanal</h2>
+          <h2 className="text-lg font-bold">Check-in semanal</h2>
           <div className="grid grid-cols-2 gap-3">
             <div><label className="label">Peso hoje (kg)</label><input name="weight" type="number" step="0.1" className="input" /></div>
             <div><label className="label">Energia na semana (1–5)</label><input name="energy" type="number" min={1} max={5} className="input" /></div>
@@ -41,7 +41,7 @@ export default async function Evolucao() {
           <div><label className="label">Como foi a semana? Treinos, dores, dieta, sono…</label><textarea name="feedback" required rows={3} className="input" /></div>
           <button className="btn">Enviar ao personal</button>
         </form>
-      ) : <div className="card mb-4 text-sm text-muted">✅ Check-in da semana enviado. O próximo libera em alguns dias.</div>}
+      ) : <div className="card mb-4 text-sm text-muted">Check-in da semana enviado. O próximo libera em alguns dias.</div>}
 
       <div className="space-y-3">
         {checkins?.map((c) => (

@@ -1,3 +1,4 @@
+import Icon from "@/components/Icon";
 import Chat from "@/components/Chat";
 import Header from "@/components/Header";
 import WeightChart from "@/components/WeightChart";
@@ -68,11 +69,11 @@ export default async function Student({ params, searchParams }: { params: Promis
         </div>
         {alerts.length > 0 && (
           <div className="card mb-4 border-red-400 text-sm">
-            <p className="font-bold text-red-300">⚠ Atenção à saúde — recomende liberação médica</p>
+            <p className="flex items-center gap-2 font-bold text-red-300"><Icon name="alert" />Atenção à saúde — recomende liberação médica</p>
             <ul className="mt-1 list-disc pl-5">{alerts.map((l) => <li key={l}>{l} <b>Sim</b></li>)}</ul>
           </div>
         )}
-        {!an && <div className="card mb-4">⏳ Este aluno ainda não preencheu a anamnese.</div>}
+        {!an && <div className="card mb-4">Este aluno ainda não preencheu a anamnese.</div>}
 
         <div className="mb-6 flex gap-2 overflow-x-auto text-sm">
           {TABS.filter(([k]) => k !== "dieta" || plan?.nutrition).map(([k, l]) => (

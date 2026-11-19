@@ -7,7 +7,7 @@ export default function Privacidade() {
     <main><Header />
       <article className="mx-auto max-w-2xl space-y-4 px-4 pb-16 text-sm leading-relaxed">
         <h1 className="text-2xl font-bold">Política de Privacidade</h1>
-        <p className="rounded-xl bg-gold/10 p-3 text-gold">⚠ Modelo inicial — revise com um advogado antes do lançamento.</p>
+        <p className="rounded-xl bg-gold/10 p-3 text-gold">Modelo inicial — revise com um advogado antes do lançamento.</p>
         <p>Em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018):</p>
         <h2 className="font-bold">Dados que coletamos</h2>
         <p>Nome, e-mail, WhatsApp, respostas da anamnese (incluindo dados de saúde, que são dados sensíveis), registros de treino, check-ins e mensagens. Os dados de pagamento são processados diretamente pelo Mercado Pago; não armazenamos dados de cartão.</p>

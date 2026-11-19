@@ -28,16 +28,16 @@ export default async function AdminHome() {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {[[`${d.active.length}${comps ? ` (${comps} cortesia)` : ""}`, "alunos ativos"], [brl(mrr), "receita recorrente (MRR)"], [brl(revenue), "recebido este mês"], [brl(revenue - commissions), "margem Movva no mês"],
           [d.personals.filter((p) => p.active).length, "personais ativos"], [d.cities.filter((c) => c.active).length, "cidades ativas"], [brl(owed), "a repassar aos personais"], [brl(commissions), "comissões do mês"]].map(([v, l]) => (
-          <div key={String(l)} className="card p-4"><p className="text-2xl font-extrabold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
+          <div key={String(l)} className="card p-4"><p className="num text-3xl font-bold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
         ))}
       </div>
 
       <h2 className="mb-3 mt-8 text-lg font-bold">Atenção</h2>
       <div className="space-y-2">
-        {!queue.length && !noContract.length && !fullPersonals.length && <p className="text-muted">Tudo em dia ✅</p>}
-        {!!queue.length && <Link href="/admin/alunos?f=fila" className="card block border-red-400">🚨 <b>{queue.length} aluno(s) pagante(s) sem personal</b> — nenhum personal disponível para eles. Atribua manualmente.</Link>}
-        {noContract.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">📄 {p.name} está ativo sem data de contrato assinado.</Link>)}
-        {fullPersonals.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">⚠ {p.name} está com {d.loadOf(p.id)}/{p.max_students} alunos — perto do limite. Hora de recrutar.</Link>)}
+        {!queue.length && !noContract.length && !fullPersonals.length && <p className="text-muted">Tudo em dia </p>}
+        {!!queue.length && <Link href="/admin/alunos?f=fila" className="card block border-red-400"><b>{queue.length} aluno(s) pagante(s) sem personal</b> — nenhum personal disponível para eles. Atribua manualmente.</Link>}
+        {noContract.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">{p.name} está ativo sem data de contrato assinado.</Link>)}
+        {fullPersonals.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">{p.name} está com {d.loadOf(p.id)}/{p.max_students} alunos — perto do limite. Hora de recrutar.</Link>)}
       </div>
 
       <h2 className="mb-3 mt-8 text-lg font-bold">Por cidade</h2>
