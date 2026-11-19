@@ -5,3 +5,6 @@ node_modules/
 ~$*
 web/supabase/.temp/
 web/supabase/.branches/
+web/qa/shots/
+web/qa/node_modules/
+web/qa/results.json
