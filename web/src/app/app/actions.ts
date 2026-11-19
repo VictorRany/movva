@@ -1,6 +1,8 @@
 "use server";
 import { MercadoPagoConfig, PreApproval } from "mercadopago";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyAnamneseDone, notifyCheckin, notifyMessage } from "@/lib/email";
 import { redirect } from "next/navigation";
 import { ANAMNESE } from "@/lib/anamnese";
 import { IS_DEMO } from "@/lib/demo";
@@ -20,6 +22,7 @@ export async function sendCheckin(form: FormData) {
     energy: Number(form.get("energy")) || null,
     feedback: form.get("feedback"),
   });
+  after(() => notifyCheckin(user.id));
   revalidatePath("/app/evolucao");
 }
 
@@ -30,14 +33,19 @@ export async function saveAnamnese(form: FormData) {
     answers[f.key] = f.type === "multi" ? form.getAll(f.key) : String(form.get(f.key) ?? "").trim();
   }
   if (!form.get("terms")) throw new Error("Aceite os termos");
+  const { data: before } = await supabase.from("anamneses").select("student_id").eq("student_id", user.id).maybeSingle();
   await supabase.from("anamneses").upsert({ student_id: user.id, answers, updated_at: new Date().toISOString() });
-  redirect("/app?bemvindo=1");
+  if (!before) after(() => notifyAnamneseDone(user.id));
+  redirect(before ? "/app/perfil" : "/app?bemvindo=1");
 }
 
 export async function sendMessage(form: FormData) {
   const { supabase, user } = await requireUser();
   const body = String(form.get("body") ?? "").trim();
-  if (body) await supabase.from("messages").insert({ student_id: user.id, from_personal: false, body });
+  if (body) {
+    await supabase.from("messages").insert({ student_id: user.id, from_personal: false, body });
+    after(() => notifyMessage(user.id, false, body));
+  }
   revalidatePath("/app/mensagens");
 }
 

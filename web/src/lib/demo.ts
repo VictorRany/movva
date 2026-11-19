@@ -37,7 +37,9 @@ const db: Record<string, Row[]> = (g.__movvaDb3 ??= {
     aluno("aluno-4", "Duda Rocha", null, "inactive", null, 0),
     aluno("aluno-5", "Eduardo Prado", "online-treino", "active", "personal-2", 20),
     aluno("aluno-6", "Fernanda Luz", "presencial-sp", "active", null, 0, "rj"),
+    { ...aluno("influ-1", "Gabi Fit (influenciadora)", "online-completo", "active", "personal-1", 15), is_comp: true, comp_until: new Date(Date.now() + 75 * 864e5).toISOString().slice(0, 10), comp_note: "@gabifit — 3 stories/mês", mp_preapproval_id: null },
   ],
+  promo_codes: [{ code: "GABI", influencer_id: "influ-1", discount_pct: 10, bonus_months: 1, signups_per_bonus: 5, active: true, created_at: ago(15) }],
   payouts: [{ id: "po-1", personal_id: "personal-1", amount: 594.86, note: "Pix ref. mês anterior", paid_at: ago(5) }],
   payments: [
     pay(1, "aluno-1", "personal-1", "online-completo", 249.9, 40, "po-1"),
@@ -163,7 +165,10 @@ export const demoClient = (userId: string | null) => ({
   auth: {
     getUser: async () => ({ data: { user: userId ? { id: userId, email: `${userId}@demo.movva` } : null } }),
     signOut: async () => ({}),
+    resetPasswordForEmail: async (email: string) => { console.log(`[email simulado] link de acesso para ${email}`); return { error: null }; },
     admin: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      generateLink: async (_: Row) => ({ data: null, error: null }),
       inviteUserByEmail: async (email: string, o: { data: Row }) => {
         const id = uid();
         db.profiles.push({ id, email, role: "aluno", sub_status: "inactive", created_at: new Date().toISOString(), name: o.data.name, phone: o.data.phone });

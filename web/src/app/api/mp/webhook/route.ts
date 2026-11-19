@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const [userId, planId] = String(sub.external_reference ?? "").split("|");
     if (!userId) return new Response("no ref");
     const status = STATUS[sub.status ?? ""] ?? "inactive";
-    await db.from("profiles").update({ plan: planId, sub_status: status, mp_preapproval_id: sub.id }).eq("id", userId);
+    await db.from("profiles").update({ plan: planId, sub_status: status, mp_preapproval_id: sub.id, ...(status === "active" ? { is_comp: false, comp_until: null } : {}) }).eq("id", userId);
     if (status === "active") await assignPersonal(userId);
     return new Response("ok");
   }

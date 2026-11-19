@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AdminShell from "@/components/AdminShell";
 import { loadAdminData } from "@/lib/admin-data";
 import { brl, getPlan } from "@/lib/plans";
@@ -10,7 +11,8 @@ export default async function AdminHome() {
   const monthPays = d.approved.filter((p) => p.paid_at.slice(0, 7) === month);
   const revenue = monthPays.reduce((t, p) => t + Number(p.amount), 0);
   const commissions = monthPays.reduce((t, p) => t + Number(p.personal_amount ?? 0), 0);
-  const mrr = d.active.reduce((t, s) => t + (getPlan(s.plan)?.price ?? 0), 0);
+  const comps = d.active.filter((s) => s.is_comp).length;
+  const mrr = d.active.filter((s) => !s.is_comp).reduce((t, s) => t + (getPlan(s.plan)?.price ?? 0), 0);
   const owed = d.approved.filter((p) => !p.payout_id && p.personal_id).reduce((t, p) => t + Number(p.personal_amount), 0);
   const queue = d.active.filter((s) => !s.personal_id);
   const noContract = d.personals.filter((p) => p.active && !p.contract_signed_at);
@@ -24,7 +26,7 @@ export default async function AdminHome() {
     <AdminShell>
       <h1 className="mb-4 text-2xl font-bold">Visão geral</h1>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        {[[d.active.length, "alunos ativos"], [brl(mrr), "receita recorrente (MRR)"], [brl(revenue), "recebido este mês"], [brl(revenue - commissions), "margem Movva no mês"],
+        {[[`${d.active.length}${comps ? ` (${comps} cortesia)` : ""}`, "alunos ativos"], [brl(mrr), "receita recorrente (MRR)"], [brl(revenue), "recebido este mês"], [brl(revenue - commissions), "margem Movva no mês"],
           [d.personals.filter((p) => p.active).length, "personais ativos"], [d.cities.filter((c) => c.active).length, "cidades ativas"], [brl(owed), "a repassar aos personais"], [brl(commissions), "comissões do mês"]].map(([v, l]) => (
           <div key={String(l)} className="card p-4"><p className="text-2xl font-extrabold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
         ))}
@@ -33,9 +35,9 @@ export default async function AdminHome() {
       <h2 className="mb-3 mt-8 text-lg font-bold">Atenção</h2>
       <div className="space-y-2">
         {!queue.length && !noContract.length && !fullPersonals.length && <p className="text-muted">Tudo em dia ✅</p>}
-        {!!queue.length && <a href="/admin/alunos?f=fila" className="card block border-red-400">🚨 <b>{queue.length} aluno(s) pagante(s) sem personal</b> — nenhum personal disponível para eles. Atribua manualmente.</a>}
-        {noContract.map((p) => <a key={p.id} href={`/admin/personais/${p.id}`} className="card block">📄 {p.name} está ativo sem data de contrato assinado.</a>)}
-        {fullPersonals.map((p) => <a key={p.id} href={`/admin/personais/${p.id}`} className="card block">⚠ {p.name} está com {d.loadOf(p.id)}/{p.max_students} alunos — perto do limite. Hora de recrutar.</a>)}
+        {!!queue.length && <Link href="/admin/alunos?f=fila" className="card block border-red-400">🚨 <b>{queue.length} aluno(s) pagante(s) sem personal</b> — nenhum personal disponível para eles. Atribua manualmente.</Link>}
+        {noContract.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">📄 {p.name} está ativo sem data de contrato assinado.</Link>)}
+        {fullPersonals.map((p) => <Link key={p.id} href={`/admin/personais/${p.id}`} className="card block">⚠ {p.name} está com {d.loadOf(p.id)}/{p.max_students} alunos — perto do limite. Hora de recrutar.</Link>)}
       </div>
 
       <h2 className="mb-3 mt-8 text-lg font-bold">Por cidade</h2>

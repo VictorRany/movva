@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import NavLink from "@/components/NavLink";
 import { logout } from "@/app/login/actions";
 
-const NAV = [["/admin", "📊", "Visão geral"], ["/admin/alunos", "🧑", "Alunos"], ["/admin/personais", "🏋️", "Personais"], ["/admin/cidades", "📍", "Cidades"], ["/admin/financeiro", "💰", "Financeiro"]];
+const NAV = [["/admin", "📊", "Início"], ["/admin/alunos", "🧑", "Alunos"], ["/admin/personais", "🏋️", "Personais"], ["/admin/cupons", "🎟", "Cupons"], ["/admin/cidades", "📍", "Cidades"], ["/admin/financeiro", "💰", "Financeiro"]];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   return (

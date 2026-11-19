@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AdminShell from "@/components/AdminShell";
 import { loadAdminData } from "@/lib/admin-data";
 import { getPlan } from "@/lib/plans";
@@ -12,6 +13,7 @@ export default async function AdminAlunos({ searchParams }: { searchParams: Prom
   const d = await loadAdminData();
   const filters: [string, string, (s: (typeof d.students)[number]) => boolean][] = [
     ["ativos", "Ativos", (s) => s.sub_status === "active"],
+    ["cortesias", "Cortesias", (s) => s.sub_status === "active" && !!s.is_comp],
     ["fila", "Sem personal", (s) => s.sub_status === "active" && !s.personal_id],
     ["pendentes", "Aguardando pagamento", (s) => s.sub_status === "pending"],
     ["cancelados", "Cancelados", (s) => s.sub_status === "cancelled"],
@@ -23,7 +25,7 @@ export default async function AdminAlunos({ searchParams }: { searchParams: Prom
 
   return (
     <AdminShell>
-      <h1 className="mb-4 text-2xl font-bold">Alunos</h1>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><h1 className="text-2xl font-bold">Alunos</h1><Link href="/admin/alunos/novo" className="btn">🎁 Liberar acesso cortesia</Link></div>
       <form className="mb-3"><input type="hidden" name="f" value={f} /><input name="q" defaultValue={q} placeholder="🔍 Nome ou e-mail" className="input" /></form>
       <div className="mb-4 flex flex-wrap gap-2 text-sm">
         {filters.map(([k, l, fx]) => (
@@ -36,7 +38,7 @@ export default async function AdminAlunos({ searchParams }: { searchParams: Prom
           <tbody>
             {list.map((s) => (
               <tr key={s.id} className="border-t border-navy-3 align-top">
-                <td className="p-3"><a href={`/personal/aluno/${s.id}`} className="font-semibold hover:text-gold">{s.name}</a><p className="text-xs text-muted">{s.email} · {s.phone}</p></td>
+                <td className="p-3"><a href={`/admin/alunos/${s.id}`} className="font-semibold hover:text-gold">{s.name}</a>{s.is_comp && <span className="ml-2 rounded bg-gold px-1.5 text-[10px] font-bold text-navy">CORTESIA</span>}<p className="text-xs text-muted">{s.email} · {s.phone}</p></td>
                 <td className="p-3">{getPlan(s.plan)?.name ?? "—"}</td>
                 <td className="p-3">{d.cityName(s.city_id)}</td>
                 <td className="p-3">{STATUS[s.sub_status]}</td>

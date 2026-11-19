@@ -20,6 +20,8 @@ export async function auth(_: string | null, form: FormData) {
   }
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return "E-mail ou senha inválidos";
+  const next = String(form.get("next") ?? "");
+  if (next.startsWith("/") && !next.startsWith("//")) redirect(next);
   const { data: p } = await supabase.from("profiles").select("role").eq("id", data.user.id).single();
   redirect(homeFor(p?.role));
 }

@@ -4,7 +4,7 @@ import { auth, demoLogin } from "./actions";
 
 type City = { id: string; name: string; state: string };
 
-export default function LoginForm({ plan, cities, demo }: { plan?: string; cities: City[]; demo: boolean }) {
+export default function LoginForm({ plan, next, cities, demo }: { plan?: string; next?: string; cities: City[]; demo: boolean }) {
   const [mode, setMode] = useState<"login" | "signup">(plan ? "signup" : "login");
   const [error, action, pending] = useActionState(auth, null);
   return (
@@ -13,6 +13,7 @@ export default function LoginForm({ plan, cities, demo }: { plan?: string; citie
         <h1 className="text-2xl font-bold">{mode === "signup" ? "Criar conta" : "Entrar"}</h1>
         <input type="hidden" name="mode" value={mode} />
         <input type="hidden" name="plan" value={plan ?? ""} />
+        <input type="hidden" name="next" value={next ?? ""} />
         {mode === "signup" && (<>
           <div><label className="label">Nome completo</label><input name="name" required minLength={3} className="input" /></div>
           <div><label className="label">WhatsApp</label><input name="phone" required className="input" placeholder="(11) 99999-9999" /></div>

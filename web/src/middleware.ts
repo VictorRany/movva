@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("exemplo")) {
-    if (!req.cookies.get("demo_user") && /^\/(app|personal|admin|definir-senha)/.test(req.nextUrl.pathname)) return NextResponse.redirect(new URL("/login", req.url));
+    if (!req.cookies.get("demo_user") && /^\/(app|personal|admin|definir-senha)/.test(req.nextUrl.pathname)) return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search)}`, req.url));
     return NextResponse.next();
   }
   let res = NextResponse.next({ request: req });
@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
   });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user && /^\/(app|personal|admin|definir-senha)/.test(req.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search)}`, req.url));
   }
   return res;
 }

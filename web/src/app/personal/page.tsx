@@ -73,6 +73,7 @@ export default async function Personal({ searchParams }: { searchParams: Promise
               </div>
               <p className="text-sm text-muted">{s.planObj?.name}</p>
               <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                {s.is_comp && <span className="rounded bg-gold px-2 py-1 font-bold text-navy">🎁 cortesia</span>}
                 {s.alerts > 0 && <span className="rounded bg-red-500/20 px-2 py-1 text-red-300">⚠ saúde</span>}
                 {s.anamnese && <span className="rounded bg-navy-3 px-2 py-1">aguardando anamnese</span>}
                 {s["sem-treino"] && <span className="rounded bg-gold/20 px-2 py-1 text-gold">montar treino</span>}

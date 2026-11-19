@@ -2,7 +2,12 @@ import Header from "@/components/Header";
 import PlanCards from "@/components/PlanCards";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function Home() {
+import { cookies } from "next/headers";
+import { findCode } from "@/lib/promo";
+
+export default async function Home({ searchParams }: { searchParams: Promise<{ cupom?: string }> }) {
+  const { cupom } = await searchParams;
+  const promo = await findCode(cupom ?? (await cookies()).get("promo")?.value ?? "");
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   return (
@@ -25,7 +30,8 @@ export default async function Home() {
       </section>
       <section id="planos" className="mx-auto max-w-5xl px-4 py-16">
         <h2 className="mb-8 text-center text-3xl font-bold">Planos</h2>
-        <PlanCards loggedIn={!!user} />
+        {promo && <p className="mb-6 text-center text-gold">🎟 Código <b>{promo.code}</b> ativado{Number(promo.discount_pct) > 0 ? ` — ${Number(promo.discount_pct)}% off` : ""}! Ele será aplicado ao assinar.</p>}
+        <PlanCards loggedIn={!!user} promo={promo} />
         <p className="mt-6 text-center text-sm text-muted">Assinatura mensal. Cancele quando quiser.</p>
       </section>
       <footer className="space-x-4 py-10 text-center text-sm text-muted"><span>© Movva · @movvabr_</span><a href="/termos">Termos</a><a href="/privacidade">Privacidade</a></footer>

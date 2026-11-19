@@ -3,3 +3,5 @@ node_modules/
 .env*
 !.env.example
 ~$*
+web/supabase/.temp/
+web/supabase/.branches/

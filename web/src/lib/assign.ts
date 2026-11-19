@@ -1,3 +1,6 @@
+import { after } from "next/server";
+import { notifyNewStudent } from "@/lib/email";
+import { creditPromo } from "@/lib/promo";
 import { getPlan } from "@/lib/plans";
 import { adminClient } from "@/lib/supabase/server";
 
@@ -26,6 +29,7 @@ export async function assignPersonal(studentId: string) {
   const [best] = await eligiblePersonals(s.plan, s.city_id);
   if (!best) return null;
   await db.from("profiles").update({ personal_id: best.id, assigned_at: new Date().toISOString() }).eq("id", studentId).is("personal_id", null);
+  after(() => notifyNewStudent(studentId));
   return best.id;
 }
 
@@ -47,4 +51,5 @@ export async function recordPayment(p: { mpPaymentId: string; studentId: string;
     amount: p.amount, commission_pct: pct, personal_amount: +((p.amount * pct) / 100).toFixed(2),
     status: p.status, paid_at: p.paidAt ?? new Date().toISOString(),
   }, { onConflict: "mp_payment_id", ignoreDuplicates: true });
+  if (p.status === "approved") await creditPromo(p.studentId);
 }
