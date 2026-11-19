@@ -78,7 +78,7 @@ export default async function StudentHome({ searchParams }: { searchParams: Prom
         {current && (
           <section className="overflow-hidden rounded-3xl bg-navy-2">
             <div className="relative border-b border-navy-3 p-5">
-              <span className="absolute right-0 top-0 h-full w-24 -skew-x-12 bg-gold/10" aria-hidden />
+              <span className="absolute -right-3 top-0 h-full w-3 -skew-x-12 bg-gold" aria-hidden />
               <p className="eyebrow">{doneToday ? "Feito hoje" : "Treino de hoje"}</p>
               <h2 className="mt-1 text-2xl">{current.title}</h2>
               <p className="mt-2 flex items-center gap-4 text-sm text-muted">
@@ -90,7 +90,7 @@ export default async function StudentHome({ searchParams }: { searchParams: Prom
             <ol className="divide-y divide-navy-3">
               {current.exercises.map((e, i) => (
                 <li key={i} className="flex items-center gap-4 px-5 py-4">
-                  <span className="num w-7 text-3xl font-bold leading-none text-navy-3">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="num w-7 text-3xl font-bold leading-none text-muted/50">{String(i + 1).padStart(2, "0")}</span>
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold leading-snug">{e.name}</p>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">

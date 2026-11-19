@@ -101,7 +101,7 @@ try {
   });
   await step("Admin: tornar a aluna cortesia e definir o personal", async () => {
     await a.goto(`${BASE}/admin/alunos/${studentId}`);
-    await a.getByRole("button", { name: "🎁 Tornar cortesia" }).click(); await a.getByText("Acesso atualizado").waitFor();
+    await a.getByRole("button", { name: "Tornar cortesia" }).click(); await a.getByText("Acesso atualizado").waitFor();
     await a.selectOption('select[name="personal_id"]', p1Id);
     await a.fill('input[name="comp_until"]', "2027-02-19");
     await a.getByRole("button", { name: "Salvar", exact: true }).click(); await a.getByText("Dados salvos").waitFor();
@@ -150,7 +150,7 @@ try {
   await step("Personal (tablet): vê a aluna com selo cortesia e 'montar treino'", async () => {
     await login(p, "personal1"); expect(p.url().includes("/personal"), "personal não caiu no /personal");
     await p.getByText("QA Aluna Teste").waitFor();
-    expect(await p.getByText("🎁 cortesia").count() > 0, "sem selo de cortesia");
+    expect(await p.getByText("cortesia", { exact: true }).count() > 0, "sem selo de cortesia");
     expect(await p.getByText("montar treino").count() > 0, "sem pendência montar treino");
     await noOverflow(p, "painel personal"); await p.screenshot({ path: `${SHOTS}/05-personal-tablet.png`, fullPage: true });
   });
