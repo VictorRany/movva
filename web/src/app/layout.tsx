@@ -4,10 +4,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Movva | Personal Presencial e Online",
   description: "Seu personal trainer, presencial ou online. Treino + nutrição com acompanhamento real.",
-  icons: { icon: "/logo.jpg", apple: "/logo.jpg" },
+  icons: { icon: "/icon-192.png", apple: "/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "Movva", statusBarStyle: "black-translucent" },
+  formatDetection: { telephone: false },
   manifest: "/manifest.webmanifest",
 };
-export const viewport: Viewport = { themeColor: "#0f1a2e" };
+export const viewport: Viewport = { themeColor: "#0f1a2e", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

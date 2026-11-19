@@ -9,9 +9,11 @@
   --color-muted: #9aa6ba;
 }
 
-body { background: var(--color-navy); color: var(--color-cream); }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--color-navy); color: var(--color-cream); padding-top: env(safe-area-inset-top); overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+.safe-bottom { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
 .card { @apply rounded-2xl bg-navy-2 border border-navy-3 p-5; }
-.btn { @apply inline-flex items-center justify-center rounded-xl bg-gold px-5 py-3 font-semibold text-navy hover:brightness-95 disabled:opacity-50; }
-.btn-ghost { @apply inline-flex items-center justify-center rounded-xl border border-navy-3 px-5 py-3 font-medium hover:bg-navy-3; }
-.input { @apply w-full rounded-xl bg-navy border border-navy-3 px-4 py-3 outline-none focus:border-gold; }
+.btn { @apply inline-flex min-h-11 items-center justify-center rounded-xl bg-gold px-5 py-3 font-semibold text-navy hover:brightness-95 disabled:opacity-50; }
+.btn-ghost { @apply inline-flex min-h-11 whitespace-nowrap items-center justify-center rounded-xl border border-navy-3 px-5 py-3 font-medium hover:bg-navy-3; }
+.input { @apply w-full min-w-0 rounded-xl bg-navy border border-navy-3 px-4 py-3 text-base outline-none focus:border-gold; } /* 16px: evita zoom no iPhone */
 .label { @apply block text-sm text-muted mb-1; }
