@@ -45,7 +45,7 @@ export default async function AdminAluno({ params, searchParams }: { params: Pro
         {s.sub_status === "active" && s.is_comp && btn("block", "Bloquear acesso", "rounded-xl border border-red-400 px-5 py-3 text-red-400")}
       </div>
 
-      <form action={updateStudent} className="card mb-6 grid gap-3 md:grid-cols-2">
+      <form key={[s.plan, s.personal_id, s.city_id, s.comp_until, s.comp_note, s.sub_status].join("|")} action={updateStudent} className="card mb-6 grid gap-3 md:grid-cols-2">
         <input type="hidden" name="id" value={id} />
         <div><label className="label">Plano</label>
           <select name="plan" defaultValue={s.plan ?? ""} className="input"><option value="">—</option>{PLANS.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>

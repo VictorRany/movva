@@ -17,5 +17,5 @@ export async function requireStudent() {
   const { data: personal } = ctx.profile?.personal_id
     ? await ctx.supabase.from("profiles").select("id, name, phone").eq("id", ctx.profile.personal_id).single()
     : { data: null };
-  return { ...ctx, anamnese, personal, plan: getPlan(ctx.profile?.plan) };
+  return { ...ctx, anamnese, personal, plan: getPlan(ctx.profile?.plan) ?? getPlan("online-completo") };
 }

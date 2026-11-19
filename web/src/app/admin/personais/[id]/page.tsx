@@ -32,7 +32,7 @@ export default async function AdminPersonal({ params, searchParams }: { params: 
           <div key={l} className="card p-4"><p className="text-2xl font-extrabold text-gold">{v}</p><p className="text-sm text-muted">{l}</p></div>
         ))}
       </div>
-      <section className="card mb-6"><h2 className="mb-4 font-bold">Dados e parceria</h2><PersonalForm p={p} cities={d.cities} action={updatePersonal} /></section>
+      <section className="card mb-6"><h2 className="mb-4 font-bold">Dados e parceria</h2><PersonalForm key={JSON.stringify(p)} p={p} cities={d.cities} action={updatePersonal} /></section>
       {!!students.length && (
         <form action={transferStudents} className="card mb-6 flex flex-wrap items-end gap-2">
           <input type="hidden" name="from" value={id} />

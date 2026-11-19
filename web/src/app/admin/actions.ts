@@ -150,8 +150,11 @@ export async function updateStudent(form: FormData) {
   const db = adminClient();
   const id = str(form, "id");
   const plan = getPlan(str(form, "plan"));
+  const { data: cur } = await db.from("profiles").select("plan, sub_status").eq("id", id).single();
+  // nunca deixa um aluno ativo sem plano
+  const planId = plan?.id ?? (cur?.sub_status === "active" ? cur.plan ?? "online-completo" : null);
   await db.from("profiles").update({
-    plan: plan?.id ?? null, city_id: str(form, "city_id") || null,
+    plan: planId, city_id: str(form, "city_id") || null,
     comp_until: str(form, "comp_until") || null, comp_note: str(form, "comp_note") || null,
   }).eq("id", id).eq("role", "aluno");
   const pid = str(form, "personal_id");
